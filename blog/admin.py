@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post
+from .models import Post, Comment
 
 
 
@@ -14,3 +14,13 @@ class PostAdmin(admin.ModelAdmin):
     date_hierarchy = 'publish'
     ordering = ['status', 'publish']
     show_facets = admin.ShowFacets.ALWAYS
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['post', 'name', 'email', 'created', 'active']
+    list_filter = ['active', 'created', 'updated']
+    search_fields = ['name', 'email', 'body']
+    raw_id_fields = ['post'] # Use raw_id_fields for foreign key relations to avoid performance issues
+    date_hierarchy = 'created' # Use date_hierarchy for better navigation in the admin interface
+    ordering = ['active', 'created'] # Order by active status and creation date
+    show_facets = admin.ShowFacets.ALWAYS # Always show facets for better filtering options
